@@ -17,9 +17,16 @@
 	</table>
 	<br>
 	<form action="/add" method="POST">
-		<input type="number" name="amount">
-		<input type="text" name="type">
-		<button type="submit">Submit</button>
+		<input type="text" autocomplete="off" name="name" placeholder="Your Name">
+		<input type="date" name="date">
+		<select name="type">
+			<option value="1for2">1 Ticket for $2</option>
+			<option value="3for5">3 Tickets for $5</option>
+			<option value="10for10">10 Tickets for $10</option>
+		</select>
+		×
+		<input type="number" name="amount" value="1" min="1" max="100">
+		<button type="submit">Add to List</button>
 	</form>
 </body>
 </html>
