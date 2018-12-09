@@ -1,11 +1,16 @@
 const MongoClient = require('mongodb').MongoClient
 const assert = require('assert')
+
+const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 const port = 3000
-app.use(express.json())
 
 const dburl = 'mongodb://localhost:27017'
+app.use(express.static('.'))
+app.use(bodyParser.urlencoded({extended: true}))
+//app.use(express.json())
+
 const dbname = 'roboticsfunding-log'
 
 const client = new MongoClient(dburl)
