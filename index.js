@@ -6,14 +6,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const dburl = 'mongodb://localhost:27017'
 app.use(express.static('.'))
 app.use(bodyParser.urlencoded({extended: true}))
 //app.use(express.json())
 
 const dbname = 'roboticsfunding-log'
+const dburl = 'mongodb://webapp:roboticsrulez@localhost:27017/'+dbname
 
-const client = new MongoClient(dburl)
+const client = new MongoClient(dburl, { useNewUrlParser: true })
 let db;
 
 client.connect(function(err) {
