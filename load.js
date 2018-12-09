@@ -50,4 +50,20 @@ function sendRequest(website, table) {
 
 function init() {
   sendRequest('http://localhost:3000/list', document.getElementById('selllist'));
+  loadDate();
+}
+
+function loadDate() {
+  function formatDate(date) {
+    let year = date.getFullYear();
+    let month = date.getMonth()+1;
+    let day = date.getDate();
+    return year+'-'+(month<10?'0':'')+month+'-'+(day<10?'0':'')+day;
+  }
+  for (datepicker of document.querySelectorAll("input[type=date]")){
+    datepicker.setAttribute("min","2018-12-06");
+    let today = formatDate(new Date());
+    datepicker.setAttribute("max", today);
+    datepicker.value = today;
+  }
 }
