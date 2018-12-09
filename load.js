@@ -55,7 +55,8 @@ function sendRequest(website, table) {
 }
 
 function init() {
-  sendRequest('http://localhost:3000/list', document.getElementById('selllist'));
+  let serverurl = 'http://localhost:3000';
+  sendRequest(serverurl+'/list', document.getElementById('selllist'));
   loadDate();
 }
 
