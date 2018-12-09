@@ -4,7 +4,16 @@
   <meta charset="UTF-8">
   <title>Robotics Fundraising Progress</title>
 </head>
-<body>
+	<label>Tickets sold</label>
+	<table id="selllist">
+		<tr>
+			<th>Date</th>
+			<th>Seller</th>
+			<th>Type</th>
+			<th>Value</th>
+		</tr>	
+	</table>
+	<br>
 	<form action="/add" method="POST">
 		<input type="number" name="amount">
 		<input type="text" name="type">
