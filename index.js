@@ -6,9 +6,13 @@ const express = require('express')
 const app = express()
 const port = 8081
 
-app.use(express.static('.'))
 app.use(bodyParser.urlencoded({extended: true}))
+
+const basepath = '/roboticslog/'
+app.use(basepath, express.static('.'))
 //app.use(express.json())
+var router = express.Router()
+app.use(basepath, router)
 
 const dbname = 'roboticsfunding-log'
 const dburl = 'mongodb://webapp:roboticsrulez@localhost:27017/'+dbname
@@ -32,18 +36,18 @@ function addSell(date, seller, type, amount){
   })
 }
 
-app.get('/', (req, res) => {
+router.get('', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-app.post('/add/', (req, res) => {
+router.post('/add', (req, res) => {
   //res.send(JSON.stringify(req.body));
   addSell(req.body.date/*new Date().toISOString()*/, req.body.name, req.body.type, req.body.amount)
   //res.send({"ok": "1"})
   res.redirect('/')
 })
 
-app.get('/list/', (req, res) => {
+router.get('/list', (req, res) => {
   let callback = res.send.bind(res);
   db.collection('sells').find({}).toArray(function(err, docs) {
     assert.equal(err, null)
