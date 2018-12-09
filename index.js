@@ -42,6 +42,14 @@ app.post('/add/', (req, res) => {
   //res.send({"ok": "1"})
   res.redirect('/')
 })
+
+app.get('/list/', (req, res) => {
+  let callback = res.send.bind(res);
+  db.collection('sells').find({}).toArray(function(err, docs) {
+    assert.equal(err, null)
+    console.log("Found records on request.")
+    callback(docs)
+  })
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
