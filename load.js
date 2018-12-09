@@ -43,6 +43,9 @@ function sendRequest(website, table) {
           table.appendChild(row);
         }
         console.log('total: $' + sum);
+        for(let bar of document.getElementsByTagName('progress')){
+          bar.value = sum;
+        }
       }
     }
   };
