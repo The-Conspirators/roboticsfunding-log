@@ -23,15 +23,19 @@ client.connect(function(err) {
   db = client.db(dbname)
 })
 
-function addSell(sell){
-  sell.date = new Date().toDateString()
-  db.sells.insert(sell)
-  console.log('inserted ' + JSON.stringify(sell));
+function addSell(date, seller, type, amount){
+  let sell = {date: date, seller: seller, type: type, amount: amount}
+  db.collection('sells').insertOne(sell, (err, result) => {
+    assert.equal(null, err)
+
+    console.log('inserted ' + JSON.stringify(sell))
+  })
 }
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
+
 app.post('/add/', (req, res) => {
   addSell(req.body)
   res.send({"ok": "1"})
