@@ -30,9 +30,11 @@ function sendRequest(website, table) {
         console.log(json);
         json = JSON.parse(json);
 
+        let sum = 0;
         for (let item of json) {
           let row = document.createElement('tr');
           let value = calculateValue(item.type, item.amount);
+          sum += parseInt(value);
           for (let info of [prettyDate(item.date), item.seller, times(item.amount, prettyType(item.type)), '$'+value]){
             let td = document.createElement('td');
             td.textContent = info;
@@ -40,6 +42,7 @@ function sendRequest(website, table) {
           }
           table.appendChild(row);
         }
+        console.log('total: $' + sum);
       }
     }
   };
