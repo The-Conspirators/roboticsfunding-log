@@ -37,8 +37,11 @@ app.get('/', (req, res) => {
 })
 
 app.post('/add/', (req, res) => {
-  addSell(req.body)
-  res.send({"ok": "1"})
+  //res.send(JSON.stringify(req.body));
+  addSell(req.body.date/*new Date().toISOString()*/, req.body.name, req.body.type, req.body.amount)
+  //res.send({"ok": "1"})
+  res.redirect('/')
+})
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
