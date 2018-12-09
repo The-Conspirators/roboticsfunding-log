@@ -1,6 +1,6 @@
 {
   "name": "roboticsfunding",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A tool to track our robotics club's funding progress",
   "main": "index.js",
   "scripts": {
