@@ -55,7 +55,7 @@ router.post('/add', (req, res) => {
   //res.send(JSON.stringify(req.body));
   addSell(req.body.date/*new Date().toISOString()*/, req.body.name, req.body.type, req.body.amount)
   //res.send({"ok": "1"})
-  res.redirect('/')
+  res.redirect(basepath)
 })
 
 router.get('/list', (req, res) => {
