@@ -3,12 +3,16 @@ const assert = require('assert')
 
 const bodyParser = require('body-parser')
 const express = require('express')
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const app = express()
 const port = 8081
 
-app.use(bodyParser.urlencoded({extended: true}))
+app.set('trust proxy', 1)
+app.use(session({name: 'sessionID', secret: "secretsecretsecret", cookie: {maxAge: 30000}}))
 
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors({optionsSuccessStatus: 200}))
 
 const basepath = '/roboticslog/'
@@ -39,7 +43,8 @@ function addSell(date, seller, type, amount){
 }
 
 router.get('', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
+  if(req.session.granted) res.sendFile(__dirname + '/index.html')
+  else res.sendFile(__dirname + '/index.html')
 })
 
 app.use(basepath, express.static(__dirname))
@@ -59,6 +64,11 @@ router.get('/list', (req, res) => {
     callback(docs)
   })
 })
+
+router.get('/secretlogin', (req,res) => {
+  req.session.granted = true;
+  res.redirect(basepath)
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
