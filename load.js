@@ -20,6 +20,12 @@ function calculateValue(type, amount) {
   if(!type || !amount) return;
   return (parseInt(type.match(/[0-9]*$/))*parseInt(amount));
 }
+function readAmount(type,amount) {
+  if(!type) return;
+  if(!amount) amount = 1;
+  let tamount = type.match(/^[0-9]*/);
+  return tamount*amount;
+}
 
 const minfund = 1950;
 const maxfund = 4700;
@@ -36,7 +42,8 @@ function sendRequest(website, table) {
         for (let item of json) {
           let row = document.createElement('tr');
           let value = calculateValue(item.type, item.amount);
-          sum += parseInt(value); amount++;
+          sum += parseInt(value);
+          amount += readAmount(item.type, item.amount);
           for (let info of [prettyDate(item.date), item.seller, times(item.amount, prettyType(item.type)), '$'+value]){
             let td = document.createElement('td');
             td.textContent = info;
