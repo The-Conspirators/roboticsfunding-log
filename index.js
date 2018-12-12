@@ -24,7 +24,7 @@ const dbname = 'roboticsfunding-log'
 const dburl = 'mongodb://webapp:roboticsrulez@localhost:27017/'+dbname
 
 const client = new MongoClient(dburl, { useNewUrlParser: true })
-let db;
+let db
 
 client.connect(function(err) {
   assert.equal(null, err)
@@ -50,14 +50,14 @@ router.get('', (req, res) => {
 app.use(basepath, express.static(__dirname))
 
 router.post('/add', (req, res) => {
-  //res.send(JSON.stringify(req.body));
+  //res.send(JSON.stringify(req.body))
   addSell(req.body.date/*new Date().toISOString()*/, req.body.name, req.body.type, req.body.amount)
   //res.send({"ok": "1"})
   res.redirect(basepath)
 })
 
 router.get('/list', (req, res) => {
-  let callback = res.send.bind(res);
+  let callback = res.send.bind(res)
   db.collection('sells').find({}).toArray(function(err, docs) {
     assert.equal(err, null)
     console.log("Found records on request.")
@@ -66,9 +66,9 @@ router.get('/list', (req, res) => {
 })
 
 router.get('/secretlogin', (req,res) => {
-  req.session.granted = true;
+  req.session.granted = true
   res.redirect(basepath)
-});
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
