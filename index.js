@@ -42,9 +42,9 @@ function addSell(date, seller, type, amount){
   })
 }
 
-router.get('', (req, res) => {
-  if(req.session.granted) res.sendFile(__dirname + '/index.html')
-  else res.sendFile(__dirname + '/index.html')
+router.get('/admin.js', (req, res) => {
+  if(req.session.granted) res.sendFile(__dirname + '/admin.js')
+  else res.sendStatus(401)
 })
 
 app.use(basepath, express.static(__dirname))
