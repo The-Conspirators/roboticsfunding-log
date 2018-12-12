@@ -21,6 +21,8 @@ function calculateValue(type, amount) {
   return (parseInt(type.match(/[0-9]*$/))*parseInt(amount));
 }
 
+const minfund = 1950;
+const maxfund = 4700;
 function sendRequest(website, table) {
   let request = new XMLHttpRequest();
   request.onreadystatechange = function() {
@@ -30,11 +32,11 @@ function sendRequest(website, table) {
         console.log(json);
         json = JSON.parse(json);
 
-        let sum = 0;
+        let sum = 0, amount = 0;
         for (let item of json) {
           let row = document.createElement('tr');
           let value = calculateValue(item.type, item.amount);
-          sum += parseInt(value);
+          sum += parseInt(value); amount++;
           for (let info of [prettyDate(item.date), item.seller, times(item.amount, prettyType(item.type)), '$'+value]){
             let td = document.createElement('td');
             td.textContent = info;
@@ -42,10 +44,12 @@ function sendRequest(website, table) {
           }
           table.appendChild(row);
         }
-        console.log('total: $' + sum);
-        for(let bar of document.getElementsByTagName('progress')){
-          bar.value = sum;
-        }
+        document.getElementById('minbar').value = sum;
+        document.getElementById('maxbar').value = sum;
+        document.getElementById('minbar').max = minfund;
+        document.getElementById('maxbar').max = maxfund;
+        let stat = document.getElementById('stats');
+        stat.innerText = stat.innerText.replace('{amount}', amount).replace('{value}', sum).replace('{minfund}',minfund).replace('{maxfund}',maxfund).replace('{minpercent}', (100*sum/minfund).toFixed(2)).replace('{maxpercent}', (100*sum/maxfund).toFixed(2));
       }
     }
   };
@@ -55,7 +59,7 @@ function sendRequest(website, table) {
 }
 
 function init() {
-  let serverurl = 'http://localhost:3000';
+  let serverurl = 'https://'+location.hostname+'/roboticslog';
   sendRequest(serverurl+'/list', document.getElementById('selllist'));
   loadDate();
 }

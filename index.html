@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body onload="init()">
-	<label>Progress on minimum required funding</label>
-	<progress max="1950"></progress>
-	<label>Progress on turning all tickets into money</label>
-	<progress max="4700"></progress>
+	<p>Progress on minimum required funding</p>
+	<progress id="minbar"></progress>
+	<p>Progress on turning all tickets into money</p>
+	<progress id="maxbar"></progress>
 	<br>
 	<label>Tickets sold</label>
 	<table id="selllist">
@@ -23,6 +23,7 @@
 		</tr>	
 	</table>
 	<br>
+	<p id="stats">{amount} Tickets sold, ${value} total. We need to fund ${minfund} min [{minpercent}% done], and are able to fund ${maxfund} [{maxpercent}% done] using tickets.</p>
 	<form action="add" method="POST">
 		<input type="text" autocomplete="off" name="name" placeholder="Your Name">
 		<input type="date" name="date">
@@ -35,5 +36,6 @@
 		<input type="number" name="amount" value="1" min="1" max="100">
 		<button type="submit">Add to List</button>
 	</form>
+	<a href="login">Log in</a>
 </body>
 </html>
