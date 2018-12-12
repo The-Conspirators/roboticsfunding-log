@@ -10,7 +10,7 @@ const app = express()
 const port = 8081
 
 app.set('trust proxy', 1)
-app.use(session({name: 'sessionID', secret: "secretsecretsecret", cookie: {maxAge: 30000}}))
+app.use(session({name: 'sessionID', secret: "secretsecretsecret", cookie: {maxAge: 30000}, resave: false, saveUninitialized: false}))
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors({optionsSuccessStatus: 200}))
