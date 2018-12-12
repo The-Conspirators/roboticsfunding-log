@@ -3,24 +3,15 @@ const assert = require('assert')
 
 const bodyParser = require('body-parser')
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const port = 8081
 
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    if(req.method === "OPTIONS") {
-          res.header("Access-Control-Allow-Methods", "PUT, POST, GET");
-          res.status(200).json({});
-          return;
-        }
-    next();
-});
+app.use(cors({optionsSuccessStatus: 200}))
 
 const basepath = '/roboticslog/'
-app.use(basepath, express.static('.'))
 //app.use(express.json())
 var router = express.Router()
 app.use(basepath, router)
@@ -50,6 +41,8 @@ function addSell(date, seller, type, amount){
 router.get('', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
+
+app.use(basepath, express.static(__dirname))
 
 router.post('/add', (req, res) => {
   //res.send(JSON.stringify(req.body));
