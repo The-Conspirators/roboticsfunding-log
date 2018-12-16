@@ -1,4 +1,5 @@
-const MongoClient = require('mongodb').MongoClient
+const mongo = require('mongodb')
+const MongoClient = mongo.MongoClient
 const assert = require('assert')
 
 const bodyParser = require('body-parser')
@@ -16,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors({optionsSuccessStatus: 200}))
 
 const basepath = '/roboticslog/'
-//app.use(express.json())
+app.use(express.json())
 var router = express.Router()
 app.use(basepath, router)
 
@@ -48,6 +49,21 @@ router.get('/admin.js', (req, res) => {
 })
 
 app.use(basepath, express.static(__dirname))
+
+router.post('/verify', (req, res) => {
+  if(!req.session.granted){
+    res.sendStatus(401)
+    return
+  }
+  console.log(req.body)
+  db.collection('sells').updateOne({_id: new mongo.ObjectID(req.body._id)}, {$set: {verified: req.body.verified}}, (err, result) => {
+    assert.equal(null, err)
+
+    if(req.body.verified) console.log('verified ' + JSON.stringify(req.body._id))
+    else console.log('un-verified ' + JSON.stringify(req.body._id))
+  })
+  res.status(200).send(req.body.verified)
+})
 
 router.post('/add', (req, res) => {
   //res.send(JSON.stringify(req.body))
