@@ -1,3 +1,7 @@
+function verify() {
+  return false;
+}
+
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function prettyDate(date) {
   if(!date) return;
@@ -41,14 +45,24 @@ function sendRequest(website, table) {
         let sum = 0, amount = 0;
         for (let item of json) {
           let row = document.createElement('tr');
+          row.id=item._id;
           let value = calculateValue(item.type, item.amount);
-          sum += parseInt(value);
-          amount += readAmount(item.type, item.amount);
+          if(item.verified) {
+            sum += parseInt(value);
+            amount += readAmount(item.type, item.amount);
+          }
           for (let info of [prettyDate(item.date), item.seller, times(item.amount, prettyType(item.type)), '$'+value]){
             let td = document.createElement('td');
             td.textContent = info;
             row.appendChild(td);
           }
+          let td = document.createElement('td');
+          let checkbox = document.createElement('input');
+          checkbox.setAttribute('type', 'checkbox');
+          checkbox.checked = item.verified;
+          checkbox.onclick = verify.bind(null, item._id);
+          td.appendChild(checkbox);
+          row.appendChild(td);
           table.appendChild(row);
         }
         document.getElementById('minbar').value = sum;
@@ -65,8 +79,8 @@ function sendRequest(website, table) {
   request.send();
 }
 
+const serverurl = 'https://'+location.hostname+'/roboticslog';
 function init() {
-  let serverurl = 'https://'+location.hostname+'/roboticslog';
   sendRequest(serverurl+'/list', document.getElementById('selllist'));
   loadDate();
 }
